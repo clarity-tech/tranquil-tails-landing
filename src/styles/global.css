@@ -199,6 +199,25 @@ body {
   transform: translateX(0);
 }
 
+/* A horizontal reveal must never widen the document: translateX(40px) exceeds
+   the 24px container gutter, so an un-revealed .slide-right sticks past the
+   right edge and adds a scrollbar (on mobile, a zoomed-out white band).
+   `overflow-x: clip` — not `hidden` — confines the travel to the parent's
+   layout box without making it a scroll container, so smooth anchor scrolling
+   and any sticky descendants keep working. */
+:has(> .slide-left, > .slide-right) {
+  overflow-x: clip;
+}
+
+/* Below `md`, the two-column layouts these classes decorate stack into one
+   column, so a sideways slide has no compositional meaning. Reveal upward. */
+@media (max-width: 767px) {
+  .slide-left,
+  .slide-right {
+    transform: translateY(30px);
+  }
+}
+
 /* ============================================
    STAGGERED ANIMATION DELAYS
    ============================================ */
